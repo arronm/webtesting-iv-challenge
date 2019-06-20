@@ -4,6 +4,7 @@ const helmet = require('helmet');
 
 const PORT = process.env.port || 4444;
 const db = require('./data/models');
+const errorRef = require('./utils/errorRef');
 const middleware = [
   express.json(),
   cors(),
@@ -19,8 +20,12 @@ server.get('/', (req, res) => {
 
 // GET PEOPLE
 server.get('/api', async (req, res) => {
-  let people = await db.get();
-  res.json(people);
+  try {
+    let people = await db.get();
+    res.json(people);
+  } catch (error) {
+    res.status(500).json(errorRef(error));
+  }
 });
 
 // POST PEOPLE
@@ -30,3 +35,5 @@ server.get('/api', async (req, res) => {
 // DELETE PEOPLE
 
 server.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
+
+module.exports = server;
