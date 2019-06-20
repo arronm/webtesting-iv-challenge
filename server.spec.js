@@ -15,5 +15,12 @@ describe('server', () => {
         .get('/')
         .expect('Content-Type', /json/i);
     });
+
+    it('response with json content', async () => {
+      const res = await supertest(server)
+        .get('/');
+      
+      expect(res.body).toEqual('API Is Working');
+    });
   });
 });

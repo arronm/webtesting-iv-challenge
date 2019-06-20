@@ -1,7 +1,4 @@
-const knex = require('knex');
-const knexConfig = require('../knexfile.js');
-
-const db = knex(knexConfig.development);
+const db = require('./db.config');
 
 const get = id => {
   if (!id) return db('people');
@@ -12,7 +9,7 @@ const add = (data) => {
   return db('people')
     .insert(data)
     .then(ids => {
-      return get('people')(ids[0]);
+      return get(ids[0]);
   });
 }
 
@@ -21,12 +18,12 @@ const update = (id, data) => {
     .where({ id })
     .update(data)
     .then(() => {
-      return get('people')(id);
+      return get(id);
   });
 }
 
 const remove = async (id) => {
-  const record = await get('people')(id);
+  const record = await get(id);
   await db('people')
     .where({ id })
     .del();
