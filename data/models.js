@@ -20,7 +20,7 @@ const update = (id, data) => {
     .then(() => {
       return get(id);
   });
-}
+};
 
 const remove = async (id) => {
   const record = await get(id);

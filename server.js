@@ -2,13 +2,14 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
-const PORT = process.env.port || 4444;
 const db = require('./data/models');
 const errorRef = require('./utils/errorRef');
+const validateBody = require('./middleware/validateBody');
+
 const middleware = [
   express.json(),
-  cors(),
   helmet(),
+  cors(),
 ];
 
 server = express();
@@ -19,7 +20,7 @@ server.get('/', (req, res) => {
 });
 
 // GET PEOPLE
-server.get('/api', async (req, res) => {
+server.get('/api/people', async (req, res) => {
   try {
     let people = await db.get();
     res.json(people);
@@ -28,12 +29,31 @@ server.get('/api', async (req, res) => {
   }
 });
 
+const bodyShape = {
+  name: {
+    required: true,
+    type: 'string',
+  },
+  email: {
+    required: true,
+    type: 'string',
+  },
+};
+
 // POST PEOPLE
+server.post('/api/people', validateBody(bodyShape), async (req, res) => {
+  try {
+    let person = await db.add(req.body);
+    res.status(201).json(person);
+  } catch (error) {
+    res.status(500).json(errorRef(error));
+  }
+});
 
 // PUT PEOPLE
 
 // DELETE PEOPLE
 
-server.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
+// server.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
 
 module.exports = server;

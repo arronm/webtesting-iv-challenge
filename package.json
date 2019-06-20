@@ -2,10 +2,10 @@
 	"name": "testingserver",
 	"version": "1.0.0",
 	"description": "Server Testing Project",
-	"main": "server.js",
+	"main": "index.js",
 	"scripts": {
 		"test": "cross-env DB_ENV=testing jest --watch --verbose",
-		"server": "nodemon server.js"
+		"server": "nodemon index.js"
 	},
 	"jest": {
 		"testRunner": "jest-circus/runner",

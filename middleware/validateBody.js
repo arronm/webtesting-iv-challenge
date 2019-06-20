@@ -25,10 +25,9 @@ const validateBody = keys => async (req, res, next) => {
             message: `Provided ${key} does not exist, please provide a valid ${key}`,
           });
         }
-      } else {
-        resolve(null);
       }
     });
+    resolve(null);
   });
 
   if (response) return res.status(400).json(response);
