@@ -27,16 +27,23 @@ describe('server', () => {
   })
 
   describe('GET /api/people', () => {
-    it('response with 200 OK', async () => {
+    it('should respond with 200 OK', async () => {
       await supertest(server)
         .get('/api/people')
         .expect(200);
     });
 
-    it('response with json content', async () => {
+    it('should respond with json content', async () => {
       await supertest(server)
         .get('/api/people')
         .expect('Content-Type', /json/i);
+    });
+
+    it('should respond with an empty object', async () => {
+      const request = await supertest(server)
+        .get('/api/people')
+        .expect(200);
+      expect(request.body.length).toBe(0);
     });
   });
 
@@ -104,7 +111,7 @@ describe('server', () => {
 
   describe('DELETE /api/people', () => {
     const endpoint = '/api/people';
-    it('should correctly delete a user with the given id', async () => {
+    it('should correctly delete a user with the given an existing id', async () => {
       const person = {
         name: 'Jimmy',
         email: 'jimbob@gmail.com',
@@ -115,11 +122,27 @@ describe('server', () => {
         .send(person)
         .expect(201);
 
-      const request = await supertest(server)
+      request = await supertest(server)
         .del(`${endpoint}/1`)
         .expect(200);
       
-      expect(request.body).toEqual(person);
+      expect(request.body).toEqual({
+        ...person,
+        id: 1,
+      });
+
+      request = await supertest(server)
+        .get(endpoint)
+        .expect(200);
+      
+      expect(request.body.length).toBe(0);
+    });
+
+    it('should correctly handle when an id does not exist', async () => {
+      const request = await supertest(server)
+        .del(`${endpoint}/1`)
+        .expect(404);
+      expect(request.body).toEqual({ message: "Could not find a resource with an id of (1)" });
     });
   });
 });

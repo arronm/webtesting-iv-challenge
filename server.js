@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const db = require('./data/models');
 const errorRef = require('./utils/errorRef');
 const validateBody = require('./middleware/validateBody');
+const validateId = require('./middleware/validateId');
 
 const middleware = [
   express.json(),
@@ -53,6 +54,14 @@ server.post('/api/people', validateBody(bodyShape), async (req, res) => {
 // PUT PEOPLE
 
 // DELETE PEOPLE
+server.delete('/api/people/:id', validateId(db), async (req, res) => {
+  try {
+    let person = await db.remove(req.resource.id);
+    res.json(person);
+  } catch (error) {
+    res.status(500).json(errorRef(error));
+  }
+})
 
 // server.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
 
