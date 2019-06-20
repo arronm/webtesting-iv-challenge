@@ -22,8 +22,8 @@ describe('models', () => {
     });
   });
 
-  describe('udpate()', () => {
-    it('should update an existing record with the provided data', async () => {
+  describe('update()', () => {
+    it('should update an existing record with the provided id and data', async () => {
       await model.add({
         name: 'a',
         email: 'a',
@@ -36,5 +36,18 @@ describe('models', () => {
       expect(data.name).toBe('a');
       expect(data.email).toBe('b');
     });
+  });
+
+  describe('remove()', () => {
+    it('should remove an existing record with the provided id', async () => {
+      await model.add({
+        name: 'a',
+        email: 'a',
+      });
+
+      let data = await model.remove(1);
+      expect(data.name).toBe('a');
+      expect(data.email).toBe('a');
+    })
   });
 });
