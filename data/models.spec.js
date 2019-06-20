@@ -21,4 +21,20 @@ describe('models', () => {
       expect(data.email).toBe('a');
     });
   });
+
+  describe('udpate()', () => {
+    it('should update an existing record with the provided data', async () => {
+      await model.add({
+        name: 'a',
+        email: 'a',
+      });
+
+      let data = await model.update(1, {
+        email: 'b',
+      });
+
+      expect(data.name).toBe('a');
+      expect(data.email).toBe('b');
+    });
+  });
 });
