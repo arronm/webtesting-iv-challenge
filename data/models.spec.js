@@ -10,17 +10,15 @@ describe('models', () => {
     await db('people').truncate();
   });
 
-  it('should ', () => {
-    expect(1).toBe(1);
-  });
+  describe('add()', () => {
+    it('should insert the provided data', async () => {
+      let data = await model.add({
+        name: 'a',
+        email: 'a',
+      });
 
-  // describe('insert()', () => {
-  //   it('should insert the provided data', async () => {
-  //     let data = await model.add({
-  //       name: 'a',
-  //       email: 'a',
-  //     });
-  //     expect(data.length).toBe(1);
-  //   });
-  // });
+      expect(data.name).toBe('a');
+      expect(data.email).toBe('a');
+    });
+  });
 });

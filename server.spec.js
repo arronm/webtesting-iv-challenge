@@ -1,7 +1,6 @@
 const supertest = require('supertest');
 
 const db = require('./data/db.config');
-const model = require('./data/models');
 const server = require('./server.js');
 
 describe('server', () => {
