@@ -44,7 +44,7 @@ const bodyShape = {
 // POST PEOPLE
 server.post('/api/people', validateBody(bodyShape), async (req, res) => {
   try {
-    let person = await db.add(req.body);
+    const person = await db.add(req.body);
     res.status(201).json(person);
   } catch (error) {
     res.status(500).json(errorRef(error));
@@ -52,6 +52,17 @@ server.post('/api/people', validateBody(bodyShape), async (req, res) => {
 });
 
 // PUT PEOPLE
+server.put('/api/people/:id', validateId(db), async (req, res) => {
+  try {
+    const person = await db.update(req.resource.id, {
+      ...req.resource,
+      ...req.body,
+    });
+    res.json(person);
+  } catch (error) {
+    res.status(500).json(errorRef(error));
+  }
+});
 
 // DELETE PEOPLE
 server.delete('/api/people/:id', validateId(db), async (req, res) => {
@@ -62,7 +73,5 @@ server.delete('/api/people/:id', validateId(db), async (req, res) => {
     res.status(500).json(errorRef(error));
   }
 })
-
-// server.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
 
 module.exports = server;

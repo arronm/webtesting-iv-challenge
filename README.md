@@ -19,8 +19,8 @@ For this project you will use `Test Driven Development` to create a RESTful API 
 
 ## Requirements
 
-1.  use `jest` and `supertest` to write the tests.
-1.  Your API must be able to **create** and **delete** a _resource_ of your choosing.
-1.  Write a minimum of two tests per route handler.
-1.  Add tests to verify that the endpoints return the correct HTTP status codes.
-1.  Write the **tests BEFORE** writing the route handlers.
+ - [x]  use `jest` and `supertest` to write the tests.
+ - [x]  Your API must be able to **create** and **delete** a _resource_ of your choosing.
+ - [x]  Write a minimum of two tests per route handler.
+ - [x]  Add tests to verify that the endpoints return the correct HTTP status codes.
+ - [x]  Write the **tests BEFORE** writing the route handlers.

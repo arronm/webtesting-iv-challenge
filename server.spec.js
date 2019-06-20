@@ -1,6 +1,7 @@
 const supertest = require('supertest');
 
 const db = require('./data/db.config');
+const model = require('./data/models');
 const server = require('./server.js');
 
 describe('server', () => {
@@ -106,6 +107,39 @@ describe('server', () => {
         })
         .expect(400);
         expect(request.body).toEqual({ message: "Expected type for (email) to be string, but instead saw number" });
+    });
+  });
+  
+  describe('PUT /api/people', () => {
+    const endpoint = '/api/people';
+    it('should modify an existing user', async () => {
+      const person = {
+        name: 'Jimmy',
+        email: 'jimbob@gmail.com',
+      };
+      await supertest(server)
+        .post(endpoint)
+        .send(person)
+        .expect(201);
+      const request = await supertest(server)
+        .put(`${endpoint}/1`)
+        .send({
+          ...person,
+          email: 'jimbo@gmail.com',
+        })
+        .expect(200);
+      expect(request.body).toEqual({
+        ...person,
+        email: 'jimbo@gmail.com',
+        id: 1,
+      });
+    });
+
+    it('should correctly handle when an id does not exist', async () => {
+      const request = await supertest(server)
+        .del(`${endpoint}/1`)
+        .expect(404);
+      expect(request.body).toEqual({ message: "Could not find a resource with an id of (1)" });
     });
   });
 
