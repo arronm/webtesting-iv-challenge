@@ -30,6 +30,10 @@ server.get('/api/people', async (req, res) => {
   }
 });
 
+server.get('/api/people/:id', validateId(db), async(req, res) => {
+  res.json(req.resource);
+})
+
 const bodyShape = {
   name: {
     required: true,

@@ -109,6 +109,34 @@ describe('server', () => {
     });
   });
   
+  describe('GET /api/people/:id', () => {
+    it('should correctly get a user with an existing id', async () => {
+      const person = {
+        name: 'Jimmy',
+        email: 'jimbob@gmail.com',
+      };
+
+      await supertest(server)
+        .post('/api/people')
+        .send(person)
+        .expect(201);
+      
+      const request = await supertest(server)
+        .get('/api/people/1')
+        .expect(200);
+      
+      expect(request.body.name).toBe('Jimmy');
+      expect(request.body.email).toBe('jimbob@gmail.com');
+    });
+
+    it('should correctly handle when the requested id does not exist', async () => {
+      const request = await supertest(server)
+        .get('/api/people/1')
+        .expect(404);
+      expect(request.body).toEqual({ message: "Could not find a resource with an id of (1)" });
+    });
+  });
+
   describe('PUT /api/people', () => {
     const endpoint = '/api/people';
     it('should modify an existing user', async () => {
